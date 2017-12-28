@@ -8,13 +8,17 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.Window;
 
-public class PaintEditActivity extends Activity {
+public class EditPaintActivity extends Activity {
     BroadcastReceiver receiver;
     boolean justFinish = false;
+
+    EditPaintLayout editPaintLayout;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        setContentView(R.layout.edit_layout);
 
         receiver = new BroadcastReceiver() {
             public void onReceive(Context context, Intent intent) {
@@ -24,6 +28,8 @@ public class PaintEditActivity extends Activity {
         };
 
         registerReceiver(receiver, new IntentFilter("super_finishPaintEditActivity"));
+
+        editPaintLayout = findViewById(R.id.edit_paint_layout);
     }
 
     protected void onPause() {

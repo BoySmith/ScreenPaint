@@ -22,8 +22,8 @@
         </activity>
 
         <activity
-            android:name=".PaintEditActivity"
-            android:theme="@style/translucent"/>
+            android:name=".EditPaintActivity"
+            android:theme="@style/translucentNoAnimation"/>
 
         <service android:name=".PaintFloatWinService"/>
     </application>

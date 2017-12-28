@@ -14,16 +14,17 @@ public class PaintFloatWinService extends Service {
 
     private BroadcastReceiver receiver;
 
-    public class MyBinder extends Binder {
+    private class MyBinder extends Binder {
         PaintFloatWinService getService() {
             return PaintFloatWinService.this;
         }
     }
 
+    @Override
     public void onCreate() {
         super.onCreate();
         if (paintTools == null) {
-            paintTools = new PaintTools(getApplicationContext(), getResources());
+            paintTools = new PaintTools(getApplicationContext());
             paintTools.createView();
         }
 
@@ -31,7 +32,7 @@ public class PaintFloatWinService extends Service {
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals("super_painter_exit_edit")) {
                     if (paintTools != null) {
-                        paintTools.exitEditState();
+                        paintTools.addPenFloatView();
                     }
                 }
             }
@@ -40,12 +41,14 @@ public class PaintFloatWinService extends Service {
         registerReceiver(receiver, new IntentFilter("super_painter_exit_edit"));
     }
 
+    @Override
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(receiver);
     }
 
-    public IBinder onBind(Intent arg0) {
+    @Override
+    public IBinder onBind(Intent intent) {
         return binder;
     }
 }

@@ -1,7 +1,6 @@
 package com.zyb.screenpaint;
 
 import android.content.Context;
-import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,15 +62,16 @@ public class ToolsLayout extends RelativeLayout implements View.OnClickListener 
 
     private void initData() {
         final ViewGroup.LayoutParams editParams = paintPointImageView.getLayoutParams();
-        editParams.height = paintView.brushSize;
-        editParams.width = paintView.brushSize;
+        editParams.height = 10; //paintView.brushSize
+        editParams.width = 10;
         paintPointImageView.setLayoutParams(editParams);
 
-        seekBar.setProgress(paintView.brushSize);
+//        seekBar.setProgress(paintView.brushSize);
+        seekBar.setProgress(10);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                paintView.brushSize = progress;
+//                paintView.brushSize = progress;
 
                 editParams.height = progress;
                 editParams.width = progress;
@@ -135,14 +135,14 @@ public class ToolsLayout extends RelativeLayout implements View.OnClickListener 
                 color = R.color.black;
                 paintDrawable = R.drawable.paint_black;
         }
-        setPaintViewColor(resources.getColor(color));
-        editChooseButton.setBackgroundResource(paintDrawable);
-        sharedPreferences.edit().putInt("paintDrawable", paintDrawable).apply();
+//        setPaintViewColor(resources.getColor(color));
+//        editChooseButton.setBackgroundResource(paintDrawable);
+//        sharedPreferences.edit().putInt("paintDrawable", paintDrawable).apply();
     }
 
     private void setPaintViewColor(int color) {
-        paintView.penColor = color;
-        GradientDrawable myGrad = (GradientDrawable) paintPointImageView.getBackground();
-        myGrad.setColor(paintView.penColor);
+//        paintView.penColor = color;
+//        GradientDrawable myGrad = (GradientDrawable) paintPointImageView.getBackground();
+//        myGrad.setColor(paintView.penColor);
     }
 }

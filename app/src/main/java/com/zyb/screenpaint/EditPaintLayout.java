@@ -15,9 +15,9 @@ import android.widget.RelativeLayout;
  * Created by zhangyb on 2017/12/28.
  */
 
-public class EditLayout extends RelativeLayout implements View.OnClickListener, View.OnTouchListener {
+public class EditPaintLayout extends RelativeLayout implements View.OnClickListener, View.OnTouchListener {
 
-    private ToolsLayout toolsLayou; //悬浮工具view，可调整画笔粗细，选择画笔颜色等
+    private ToolsLayout toolsLayout; //悬浮工具view，可调整画笔粗细，选择画笔颜色等
     private PaintView paintView; //真正作画的view
 
     private ImageButton editDeleteButton; //关闭 edit view 按钮
@@ -28,15 +28,15 @@ public class EditLayout extends RelativeLayout implements View.OnClickListener, 
     private Context context;
     private SharedPreferences sharedPreferences;
 
-    public EditLayout(Context context) {
+    public EditPaintLayout(Context context) {
         this(context, null);
     }
 
-    public EditLayout(Context context, @Nullable AttributeSet attrs) {
+    public EditPaintLayout(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public EditLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public EditPaintLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
 
@@ -46,14 +46,13 @@ public class EditLayout extends RelativeLayout implements View.OnClickListener, 
     }
 
     private void initView() {
-        View editView = LayoutInflater.from(context).inflate(R.layout.edit_view_layout, this, true);
-        toolsLayou = editView.findViewById(R.id.edit_tools_layout);
-        paintView = new PaintView(context);
-
-        editDeleteButton = editView.findViewById(R.id.edit_delete_button);
-        editUnDoButton = editView.findViewById(R.id.edit_undo_button);
-        editReDoButton = editView.findViewById(R.id.edit_redo_button);
-        editChooseButton = editView.findViewById(R.id.edit_choose_button);
+        View editLayout = LayoutInflater.from(context).inflate(R.layout.edit_layout, this, true);
+        toolsLayout = editLayout.findViewById(R.id.edit_tools_layout);
+        paintView = editLayout.findViewById(R.id.edit_paint_view);
+        editDeleteButton = editLayout.findViewById(R.id.edit_delete_button);
+        editUnDoButton = editLayout.findViewById(R.id.edit_undo_button);
+        editReDoButton = editLayout.findViewById(R.id.edit_redo_button);
+        editChooseButton = editLayout.findViewById(R.id.edit_choose_button);
     }
 
     private void initData() {
@@ -74,7 +73,7 @@ public class EditLayout extends RelativeLayout implements View.OnClickListener, 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.edit_delete_button:
-                exitEditState();
+//                exitEditState();
                 context.sendBroadcast(new Intent("super_finishPaintEditActivity"));
                 break;
 
@@ -95,10 +94,10 @@ public class EditLayout extends RelativeLayout implements View.OnClickListener, 
                 break;
 
             case R.id.edit_choose_button:
-                if (toolsLayou.getVisibility() == View.VISIBLE) {
-                    toolsLayou.setVisibility(View.GONE);
+                if (toolsLayout.getVisibility() == View.VISIBLE) {
+                    toolsLayout.setVisibility(View.GONE);
                 } else {
-                    toolsLayou.setVisibility(View.VISIBLE);
+                    toolsLayout.setVisibility(View.VISIBLE);
                 }
                 break;
         }
