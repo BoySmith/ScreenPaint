@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/transparent"
+                android:focusable="true"
+                android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/edit_delete_button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/close_normal"/>
+
+    <ImageButton
+        android:id="@+id/edit_undo_button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/edit_delete_button"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/undo_no"/>
+
+    <ImageButton
+        android:id="@+id/edit_redo_button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/edit_undo_button"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/redo_no"/>
+
+
+    <ImageButton
+        android:id="@+id/edit_choose_button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/edit_redo_button"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/paint_black"/>
+
+    <RelativeLayout
+        android:id="@+id/edit_tools_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_choose_button"
+        android:visibility="gone">
+
+        <include
+            layout="@layout/tools"/>
+    </RelativeLayout>
+
+</RelativeLayout>

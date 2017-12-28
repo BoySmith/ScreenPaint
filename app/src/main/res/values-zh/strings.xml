@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">屏幕画笔侠</string>
+    <string name="pen_guide">截图前必备的涂鸦神器</string>
+    <string name="edit_init_tip">点击开始画</string>
+    <string name="exit">退出</string>
+</resources>

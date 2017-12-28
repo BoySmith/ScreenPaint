@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="tools_width">280dp</dimen>
+    <dimen name="tools_height">80dp</dimen>
+
+</resources>
