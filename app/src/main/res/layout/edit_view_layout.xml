@@ -6,6 +6,10 @@
                 android:focusable="true"
                 android:orientation="vertical">
 
+    <com.zyb.screenpaint.PaintView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     <ImageButton
         android:id="@+id/edit_delete_button"
         android:layout_width="30dp"
@@ -37,15 +41,11 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/paint_black"/>
 
-    <RelativeLayout
+    <com.zyb.screenpaint.ToolsLayout
         android:id="@+id/edit_tools_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/edit_choose_button"
-        android:visibility="gone">
-
-        <include
-            layout="@layout/tools"/>
-    </RelativeLayout>
+        android:visibility="gone"/>
 
 </RelativeLayout>

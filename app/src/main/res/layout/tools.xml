@@ -25,75 +25,75 @@
         style="@android:style/Widget.Holo.SeekBar"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/point_and_direction_layout"/>
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/point_and_direction_layout"/>
 
-    <ImageView
-        android:id="@+id/colorRed"
+    <ImageButton
+        android:id="@+id/redButton"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
         android:background="@drawable/painter_red"/>
 
-    <ImageView
-        android:id="@+id/colorOrange"
+    <ImageButton
+        android:id="@+id/orangeButton"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/colorRed"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/redButton"
         android:background="@drawable/painter_orange"/>
 
-    <ImageView
-        android:id="@+id/colorYellow"
+    <ImageButton
+        android:id="@+id/yellowButton"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/colorOrange"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/orangeButton"
         android:background="@drawable/painter_yellow"/>
 
-    <ImageView
-        android:id="@+id/colorGreen"
+    <ImageButton
+        android:id="@+id/greenButton"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/colorYellow"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/yellowButton"
         android:background="@drawable/painter_green"/>
 
-    <ImageView
-        android:id="@+id/colorBlue"
+    <ImageButton
+        android:id="@+id/blueButton"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/colorGreen"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/greenButton"
         android:background="@drawable/painter_blue"/>
 
-    <ImageView
-        android:id="@+id/colorLightBlue"
+    <ImageButton
+        android:id="@+id/lightBlueButton"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/colorBlue"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/blueButton"
         android:background="@drawable/painter_light_blue"/>
 
-    <ImageView
-        android:id="@+id/colorBlack"
+    <ImageButton
+        android:id="@+id/blackButton"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/colorLightBlue"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/lightBlueButton"
         android:background="@drawable/painter_black"/>
 
 </RelativeLayout>
