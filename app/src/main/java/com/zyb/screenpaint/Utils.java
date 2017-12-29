@@ -1,5 +1,6 @@
 package com.zyb.screenpaint;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -7,6 +8,8 @@ import android.content.pm.ResolveInfo;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.WindowManager;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,7 +21,8 @@ public class Utils {
         Throwable th;
         BufferedReader br = null;
         try {
-            BufferedReader br2 = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("getprop " + propName).getInputStream()), 1024);
+            BufferedReader br2 = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("getprop " +
+                    propName).getInputStream()), 1024);
             try {
                 String line = br2.readLine();
                 if (br2 != null) {
@@ -69,7 +73,8 @@ public class Utils {
         PackageManager localPackageManager = paramContext.getPackageManager();
         Intent localIntent = new Intent("android.intent.action.MAIN");
         localIntent.addCategory("android.intent.category.HOME");
-        for (ResolveInfo resolveInfo : localPackageManager.queryIntentActivities(localIntent, PackageManager.MATCH_DEFAULT_ONLY)) {
+        for (ResolveInfo resolveInfo : localPackageManager.queryIntentActivities(localIntent, PackageManager
+                .MATCH_DEFAULT_ONLY)) {
             if (resolveInfo.activityInfo.packageName.equalsIgnoreCase("com.miui.home")) {
                 return true;
             }
@@ -133,5 +138,40 @@ public class Utils {
             }
         }
         return f;
+    }
+
+    /**
+     * 获得状态栏的高度
+     *
+     * @param context
+     * @return
+     */
+    public static int getStatusBarHeight(Context context) {
+
+        int statusHeight = -1;
+
+        try {
+            Class<?> clazz = Class.forName("com.android.internal.R$dimen");
+            Object object = clazz.newInstance();
+            int height = Integer.parseInt(clazz.getField("status_bar_height").get(object).toString());
+            statusHeight = context.getResources().getDimensionPixelSize(height);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return statusHeight;
+    }
+
+    /**
+     * @param activity
+     * @return 判断当前手机是否是全屏
+     */
+    public static boolean isFullScreen(Activity activity) {
+        int flag = activity.getWindow().getAttributes().flags;
+        if ((flag & WindowManager.LayoutParams.FLAG_FULLSCREEN) == WindowManager.LayoutParams.FLAG_FULLSCREEN) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

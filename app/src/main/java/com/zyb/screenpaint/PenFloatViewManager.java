@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Build.VERSION;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -96,13 +97,16 @@ class PenFloatViewManager {
         }
         windowManagerParams.x = 0;
 
-        windowManager.addView(penFloatLayout, windowManagerParams);
+        if (penFloatLayout.getParent() == null) {
+            windowManager.addView(penFloatLayout, windowManagerParams);
+        }
     }
 
     private OnClickListener penFloatClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             windowManager.removeView(penFloatLayout);
+
 
             Intent intent = new Intent(context, EditPaintActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -150,6 +154,7 @@ class PenFloatViewManager {
         }
         windowManager.updateViewLayout(penFloatLayout, windowManagerParams);
     }
+
 
     /********************** 下面是暂时未用到的 *************************/
 
