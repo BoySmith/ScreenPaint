@@ -8,6 +8,7 @@ import android.graphics.Paint.Join;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.Point;
+import android.util.AttributeSet;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -27,7 +28,11 @@ public class PaintView extends View {
     }
 
     public PaintView(Context context) {
-        super(context);
+        this(context, null);
+    }
+
+    public PaintView(Context context, AttributeSet attrs) {
+        super(context, attrs, 0);
         this.context = context;
         penColor = context.getResources().getColor(R.color.red);
     }

@@ -3,11 +3,11 @@ package com.zyb.screenpaint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
@@ -32,11 +32,11 @@ public class EditPaintLayout extends RelativeLayout implements View.OnClickListe
         this(context, null);
     }
 
-    public EditPaintLayout(Context context, @Nullable AttributeSet attrs) {
+    public EditPaintLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public EditPaintLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public EditPaintLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
 
@@ -47,7 +47,6 @@ public class EditPaintLayout extends RelativeLayout implements View.OnClickListe
 
     private void initView() {
         View editLayout = LayoutInflater.from(context).inflate(R.layout.edit_layout, this, true);
-        toolsLayout = editLayout.findViewById(R.id.edit_tools_layout);
         paintView = editLayout.findViewById(R.id.edit_paint_view);
         editDeleteButton = editLayout.findViewById(R.id.edit_delete_button);
         editUnDoButton = editLayout.findViewById(R.id.edit_undo_button);
@@ -59,6 +58,19 @@ public class EditPaintLayout extends RelativeLayout implements View.OnClickListe
         sharedPreferences = context.getSharedPreferences("user_info", 0);
         paintView.penColor = sharedPreferences.getInt("penColor", context.getResources().getColor(R.color.black));
         paintView.brushSize = sharedPreferences.getInt("penSize", 10);
+        editChooseButton.setBackgroundResource(sharedPreferences.getInt("penDrawable", R.drawable.paint_black));
+
+        toolsLayout = new ToolsLayout.Builder(context)
+                .setPaintPointColor(paintView.penColor)
+                .setPaintPointSize(paintView.brushSize)
+                .setSeekBarProgress(paintView.brushSize)
+                .create();
+
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMarginStart(10);
+        layoutParams.addRule(RIGHT_OF, R.id.edit_choose_button);
+        addView(toolsLayout, layoutParams);
     }
 
     private void initListener() {
@@ -73,7 +85,7 @@ public class EditPaintLayout extends RelativeLayout implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.edit_delete_button:
-//                exitEditState();
+                exitEdit();
                 context.sendBroadcast(new Intent("super_finishPaintEditActivity"));
                 break;
 
@@ -121,5 +133,9 @@ public class EditPaintLayout extends RelativeLayout implements View.OnClickListe
                 break;
         }
         return true;
+    }
+
+    public void exitEdit() {
+
     }
 }

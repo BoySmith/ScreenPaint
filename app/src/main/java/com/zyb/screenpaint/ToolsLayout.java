@@ -1,6 +1,7 @@
 package com.zyb.screenpaint;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by zhangyb on 2017/12/28.
@@ -66,12 +69,12 @@ public class ToolsLayout extends RelativeLayout implements View.OnClickListener 
         editParams.width = 10;
         paintPointImageView.setLayoutParams(editParams);
 
-//        seekBar.setProgress(paintView.brushSize);
         seekBar.setProgress(10);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 //                paintView.brushSize = progress;
+                EventBus.getDefault().post(1);
 
                 editParams.height = progress;
                 editParams.width = progress;
@@ -135,14 +138,67 @@ public class ToolsLayout extends RelativeLayout implements View.OnClickListener 
                 color = R.color.black;
                 paintDrawable = R.drawable.paint_black;
         }
-//        setPaintViewColor(resources.getColor(color));
+        setPaintPointColor(context.getResources().getColor(color));
 //        editChooseButton.setBackgroundResource(paintDrawable);
-//        sharedPreferences.edit().putInt("paintDrawable", paintDrawable).apply();
     }
 
-    private void setPaintViewColor(int color) {
+    private void setPaintPointColor(int color) {
 //        paintView.penColor = color;
-//        GradientDrawable myGrad = (GradientDrawable) paintPointImageView.getBackground();
-//        myGrad.setColor(paintView.penColor);
+        GradientDrawable myGrad = (GradientDrawable) paintPointImageView.getBackground();
+        myGrad.setColor(color);
+    }
+
+    private void setPaintPointSize(int size) {
+        ViewGroup.LayoutParams paintPointParams = paintPointImageView.getLayoutParams();
+        paintPointParams.height = size;
+        paintPointParams.width = size;
+        paintPointImageView.setLayoutParams(paintPointParams);
+    }
+
+    private void setSeekBarProgress(int progress) {
+        seekBar.setProgress(progress);
+    }
+
+    static class Builder {
+        private final Context context;
+
+        private Integer seekBarProgress;
+        private Integer paintPointColor;
+        private Integer paintPointSize;
+
+        Builder(Context context) {
+            this.context = context;
+        }
+
+        Builder setSeekBarProgress(int progress) {
+            seekBarProgress = progress;
+            return this;
+        }
+
+        Builder setPaintPointColor(int color) {
+            paintPointColor = color;
+            return this;
+        }
+
+        Builder setPaintPointSize(int size) {
+            paintPointSize = size;
+            return this;
+        }
+
+        ToolsLayout create() {
+            final ToolsLayout toolsLayout = new ToolsLayout(context);
+
+            if (paintPointColor != null) {
+                toolsLayout.setPaintPointColor(paintPointColor);
+            }
+            if (paintPointSize != null) {
+                toolsLayout.setPaintPointSize(paintPointSize);
+            }
+            if (seekBarProgress != null) {
+                toolsLayout.setSeekBarProgress(seekBarProgress);
+            }
+
+            return toolsLayout;
+        }
     }
 }

@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
-class PaintTools {
+class PenFloatViewManager {
     private View penFloatLayout = null; //画笔悬浮view，包括 penImageView、penGuideTextView；点击可显示 toolsFloatLayout
     private ImageView penFloatImageView; //画笔悬浮view
     private ImageView arrowImageView; //首次使用提示 的箭头
@@ -35,7 +35,7 @@ class PaintTools {
     private WindowManager windowManager = null;
     private LayoutParams windowManagerParams = null;
 
-    PaintTools(Context context) {
+    PenFloatViewManager(Context context) {
         this.context = context;
     }
 

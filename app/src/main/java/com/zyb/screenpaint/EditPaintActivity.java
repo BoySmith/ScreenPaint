@@ -18,7 +18,7 @@ public class EditPaintActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        setContentView(R.layout.edit_layout);
+        setContentView(R.layout.activity_edit);
 
         receiver = new BroadcastReceiver() {
             public void onReceive(Context context, Intent intent) {

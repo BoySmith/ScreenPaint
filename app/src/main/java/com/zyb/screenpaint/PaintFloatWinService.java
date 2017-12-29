@@ -9,7 +9,8 @@ import android.os.Binder;
 import android.os.IBinder;
 
 public class PaintFloatWinService extends Service {
-    private PaintTools paintTools;
+
+    private PenFloatViewManager penFloatViewManager;
     private MyBinder binder = new MyBinder();
 
     private BroadcastReceiver receiver;
@@ -23,16 +24,17 @@ public class PaintFloatWinService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        if (paintTools == null) {
-            paintTools = new PaintTools(getApplicationContext());
-            paintTools.createView();
+
+        if (penFloatViewManager == null) {
+            penFloatViewManager = new PenFloatViewManager(getApplicationContext());
+            penFloatViewManager.createView();
         }
 
         receiver = new BroadcastReceiver() {
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals("super_painter_exit_edit")) {
-                    if (paintTools != null) {
-                        paintTools.addPenFloatView();
+                    if (penFloatViewManager != null) {
+                        penFloatViewManager.addPenFloatView();
                     }
                 }
             }
