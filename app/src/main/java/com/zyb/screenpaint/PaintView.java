@@ -7,7 +7,6 @@ import android.graphics.Paint.Cap;
 import android.graphics.Paint.Join;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
-import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -15,16 +14,23 @@ import java.util.ArrayList;
 
 public class PaintView extends View {
     public int brushSize = 10;
-    Context context;
-    private ArrayList<Node> nodes = new ArrayList<>();
-    private Path path;
     public int penColor;
+
+    private int startPathX;
+    private int startPathY;
+
+    private ArrayList<Node> nodes = new ArrayList<>();
     private ArrayList<Node> reDos = new ArrayList<>();
+
+    Context context;
+    private Path path;
 
     private class Node {
         Paint Paint;
         Path Path;
-        Point Point;
+        boolean isPoint;
+        int pointX;
+        int pointY;
     }
 
     public PaintView(Context context) {
@@ -41,41 +47,50 @@ public class PaintView extends View {
         super.onDraw(canvas);
         for (int i = 0; i < nodes.size(); i++) {
             Node node = nodes.get(i);
-            canvas.drawPath(node.Path, node.Paint);
+            if (node.isPoint) {
+                canvas.drawPoint(node.pointX, node.pointY, node.Paint);
+            } else {
+                canvas.drawPath(node.Path, node.Paint);
+            }
         }
     }
 
     public void startPath(int x, int y) {
-        reDos = new ArrayList<>();
+        startPathX = x;
+        startPathY = y;
 
         path = new Path();
-        path.moveTo((float) x, (float) y);
-
         Node node = new Node();
         node.Paint = getPaint();
         node.Path = path;
-        node.Point = new Point(x, y);
         nodes.add(node);
 
-        invalidate();
+        path.moveTo((float) x, (float) y);
     }
 
-    public Paint getPaint() {
-        Paint mPaint = new Paint();
+    public void movePath(int x, int y) {
+        if (path == null) {
+            return;
+        }
 
-        mPaint.setDither(true);
-        mPaint.setColor(penColor);
-        mPaint.setStyle(Style.STROKE);
-        mPaint.setStrokeJoin(Join.ROUND);
-        mPaint.setStrokeCap(Cap.ROUND);
-        mPaint.setStrokeWidth((float) brushSize);
-
-        return mPaint;
-    }
-
-    public void addPath(int x, int y) {
         path.lineTo((float) x, (float) y);
         invalidate();
+    }
+
+    /**
+     * 停止画笔，当画笔只是点击一下时，显示一个圆点
+     */
+    public void stopPath(int x, int y) {
+        if (Math.abs(x - startPathX) < 5 && Math.abs(y - startPathY) < 5) {
+            int len = nodes.size();
+            if (len > 0) {
+                Node node = nodes.get(len - 1);
+                node.isPoint = true;
+                node.pointX = x;
+                node.pointY = y;
+                invalidate();
+            }
+        }
     }
 
     public void ClearAll() {
@@ -93,7 +108,6 @@ public class PaintView extends View {
 
     /**
      * 撤销上一笔
-     * @return 画面中有笔数，返回true；否则返回false
      */
     public void unDo() {
         int len = nodes.size();
@@ -107,9 +121,8 @@ public class PaintView extends View {
 
     /**
      * 还原上一笔
-     * @return 撤销的笔数大于0，返回true；否则返回false
      */
-    public boolean reDo() {
+    public void reDo() {
         int len = reDos.size();
         if (len > 0) {
             Node node = reDos.get(len - 1);
@@ -117,6 +130,18 @@ public class PaintView extends View {
             nodes.add(node);
             invalidate();
         }
-        return reDos.size() > 0;
+    }
+
+    private Paint getPaint() {
+        Paint mPaint = new Paint();
+
+        mPaint.setDither(true);
+        mPaint.setColor(penColor);
+        mPaint.setStyle(Style.STROKE);
+        mPaint.setStrokeJoin(Join.ROUND);
+        mPaint.setStrokeCap(Cap.ROUND);
+        mPaint.setStrokeWidth((float) brushSize);
+
+        return mPaint;
     }
 }

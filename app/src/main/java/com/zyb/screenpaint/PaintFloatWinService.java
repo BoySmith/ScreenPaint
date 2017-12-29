@@ -25,22 +25,20 @@ public class PaintFloatWinService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        if (penFloatViewManager == null) {
-            penFloatViewManager = new PenFloatViewManager(getApplicationContext());
-            penFloatViewManager.createView();
-        }
+        penFloatViewManager = new PenFloatViewManager(getApplicationContext());
+        penFloatViewManager.createView();
 
         receiver = new BroadcastReceiver() {
             public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals("super_painter_exit_edit")) {
-                    if (penFloatViewManager != null) {
-                        penFloatViewManager.addPenFloatView();
-                    }
+                if (penFloatViewManager != null) {
+                    penFloatViewManager.addPenFloatView();
                 }
             }
         };
-        //监听广播：当正在画图时，但此时在其他应用中 这时按 home 键，或有其他窗口弹出时，要退出画图编辑
+        //监听广播：当正在画图时，但EditPaintActivity onPause 时，要显示悬浮窗
         registerReceiver(receiver, new IntentFilter("super_painter_exit_edit"));
+        //监听广播：当正在画图时，点击 x 按钮 ，要显示悬浮窗
+        registerReceiver(receiver, new IntentFilter("super_finishPaintEditActivity"));
     }
 
     @Override

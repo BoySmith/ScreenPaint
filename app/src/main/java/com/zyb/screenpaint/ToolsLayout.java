@@ -11,12 +11,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 
-import org.greenrobot.eventbus.EventBus;
-
 /**
  * Created by zhangyb on 2017/12/28.
  */
-
 public class ToolsLayout extends RelativeLayout implements View.OnClickListener {
 
     private ImageView paintPointImageView; //工具栏中的表示画笔粗细的圆点，点击父layout可启动画图
@@ -64,21 +61,13 @@ public class ToolsLayout extends RelativeLayout implements View.OnClickListener 
     }
 
     private void initData() {
-        final ViewGroup.LayoutParams editParams = paintPointImageView.getLayoutParams();
-        editParams.height = 10; //paintView.brushSize
-        editParams.width = 10;
-        paintPointImageView.setLayoutParams(editParams);
-
-        seekBar.setProgress(10);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//                paintView.brushSize = progress;
-                EventBus.getDefault().post(1);
-
-                editParams.height = progress;
-                editParams.width = progress;
-                paintPointImageView.setLayoutParams(editParams);
+                if (toolsListener != null) {
+                    toolsListener.paintPenPointSizeChanged(progress);
+                }
+                setPaintPointSize(progress);
             }
 
             @Override
@@ -139,66 +128,39 @@ public class ToolsLayout extends RelativeLayout implements View.OnClickListener 
                 paintDrawable = R.drawable.paint_black;
         }
         setPaintPointColor(context.getResources().getColor(color));
-//        editChooseButton.setBackgroundResource(paintDrawable);
+        if (toolsListener != null) {
+            toolsListener.paintPenResChanged(paintDrawable);
+            toolsListener.paintPenColorChanged(context.getResources().getColor(color));
+        }
     }
 
     private void setPaintPointColor(int color) {
-//        paintView.penColor = color;
         GradientDrawable myGrad = (GradientDrawable) paintPointImageView.getBackground();
         myGrad.setColor(color);
     }
 
-    private void setPaintPointSize(int size) {
+    public void setPaintPointSize(int size) {
         ViewGroup.LayoutParams paintPointParams = paintPointImageView.getLayoutParams();
         paintPointParams.height = size;
         paintPointParams.width = size;
         paintPointImageView.setLayoutParams(paintPointParams);
     }
 
-    private void setSeekBarProgress(int progress) {
+    public void setSeekBarProgress(int progress) {
         seekBar.setProgress(progress);
     }
 
-    static class Builder {
-        private final Context context;
+    interface ToolsListener {
+        void paintPenResChanged(int resId);
 
-        private Integer seekBarProgress;
-        private Integer paintPointColor;
-        private Integer paintPointSize;
+        void paintPenPointSizeChanged(int size);
 
-        Builder(Context context) {
-            this.context = context;
-        }
+        void paintPenColorChanged(int color);
+    }
 
-        Builder setSeekBarProgress(int progress) {
-            seekBarProgress = progress;
-            return this;
-        }
+    private ToolsListener toolsListener;
 
-        Builder setPaintPointColor(int color) {
-            paintPointColor = color;
-            return this;
-        }
-
-        Builder setPaintPointSize(int size) {
-            paintPointSize = size;
-            return this;
-        }
-
-        ToolsLayout create() {
-            final ToolsLayout toolsLayout = new ToolsLayout(context);
-
-            if (paintPointColor != null) {
-                toolsLayout.setPaintPointColor(paintPointColor);
-            }
-            if (paintPointSize != null) {
-                toolsLayout.setPaintPointSize(paintPointSize);
-            }
-            if (seekBarProgress != null) {
-                toolsLayout.setSeekBarProgress(seekBarProgress);
-            }
-
-            return toolsLayout;
-        }
+    public void setToolsListener(ToolsListener listener) {
+        toolsListener = listener;
     }
 }
