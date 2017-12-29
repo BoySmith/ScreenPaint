@@ -42,11 +42,8 @@ public class MainActivity extends Activity {
     }
 
     private boolean hasAlertPermission() {
-        boolean hasPermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.SYSTEM_ALERT_WINDOW)
+        return ActivityCompat.checkSelfPermission(this, Manifest.permission.SYSTEM_ALERT_WINDOW)
                 == PackageManager.PERMISSION_GRANTED;
-        Log.i("zyb", "hasAlertPermission: " + hasPermission);
-
-        return hasPermission;
     }
 
     private void requestAlertPermission() {
@@ -58,6 +55,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == REQUEST_OVERLAY_PERMISSION && Build.VERSION.SDK_INT >= 23) {
             if (!Settings.canDrawOverlays(this)) {
                 Toast.makeText(this, "权限授予失败，无法开启悬浮窗", Toast.LENGTH_SHORT).show();
@@ -79,6 +77,7 @@ public class MainActivity extends Activity {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startFloatService();
             } else {
+                //目前在6.0以上，手动申请权限会返回失败，在这里先不管，仍然开启服务。
                 Toast.makeText(MainActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
                 startFloatService();
             }
